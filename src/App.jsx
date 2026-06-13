@@ -159,7 +159,7 @@ function App() {
                 {new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
               </span>
             </div>
-            <AnalyticsDashboard logs={logs} className="analytics-grid" />
+            <AnalyticsDashboard logs={logs} />
           </section>
 
           {/* Main content grid */}

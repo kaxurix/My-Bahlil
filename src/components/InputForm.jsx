@@ -72,7 +72,7 @@ export default function InputForm({ currentFuel, prices, onSubmit, onPricesChang
       <div className="card" style={{ padding: '20px 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
           <FieldLabel>Level Bensin Saat Ini</FieldLabel>
-          <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 20, fontWeight: 700, color: 'var(--blue)' }}>
+          <span style={{ fontSize: 20, fontWeight: 700, color: 'var(--blue)' }}>
             {fuelLevel.toFixed(2)} L
           </span>
         </div>
@@ -91,7 +91,7 @@ export default function InputForm({ currentFuel, prices, onSubmit, onPricesChang
 
         <button type="button" id="btn-kritis" onClick={() => setFuelLevel(0.8)}
           className="btn btn-danger-ghost" style={{ width: '100%', marginTop: 14, fontSize: 13 }}>
-          Simulasi Level Kritis (&lt;1L)
+          Indikator Berkedip
         </button>
       </div>
 
@@ -116,13 +116,8 @@ export default function InputForm({ currentFuel, prices, onSubmit, onPricesChang
                   cursor: 'pointer', transition: 'all .15s',
                   fontFamily: 'inherit', textAlign: 'center',
                 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
-                  <span style={{
-                    width: 8, height: 8, borderRadius: '50%',
-                    background: sel ? (isP ? 'var(--blue)' : 'var(--red)') : 'var(--ink-3)',
-                    flexShrink: 0,
-                  }} />
-                  <span style={{ fontSize: 14, fontWeight: 700, textTransform: 'capitalize' }}>{type}</span>
+              <div style={{ textAlign: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, textTransform: 'capitalize', display: 'block' }}>{type}</span>
                 </div>
                 <p style={{ fontSize: 11.5, marginTop: 4, fontWeight: 500, opacity: .8 }}>
                   {formatRupiah(prices[type])}/L
