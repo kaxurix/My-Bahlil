@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 120" width="280" height="120">
+  <!-- Red section (left, parallelogram) -->
+  <clipPath id="leftClip">
+    <polygon points="0,0 170,0 140,120 0,120"/>
+  </clipPath>
+  <!-- Blue section (right, parallelogram) -->
+  <clipPath id="rightClip">
+    <polygon points="155,0 280,0 280,120 125,120"/>
+  </clipPath>
+
+  <!-- Background shape (full badge) -->
+  <rect x="0" y="0" width="280" height="120" rx="16" ry="16" fill="#1B55A0"/>
+
+  <!-- Red section overlay -->
+  <rect x="0" y="0" width="280" height="120" rx="16" ry="16" fill="#D01919" clip-path="url(#leftClip)"/>
+
+  <!-- Divider diagonal (darker blue strip for depth) -->
+  <polygon points="148,0 170,0 138,120 116,120" fill="#153f80" opacity="0.6"/>
+
+  <!-- "My" text (italic, white, left section) -->
+  <text x="62" y="72" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-style="italic" font-size="58" fill="white" text-anchor="middle" dominant-baseline="middle" letter-spacing="-2">My</text>
+
+  <!-- "BAHLIL" text (bold, white, right section) -->
+  <text x="208" y="72" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="40" fill="white" text-anchor="middle" dominant-baseline="middle" letter-spacing="1">BAHLIL</text>
+</svg>
