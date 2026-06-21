@@ -223,3 +223,27 @@ input[type="number"] { -moz-appearance: textfield; }
 .badge-red   { background: var(--red-tint);   color: var(--red); }
 .badge-amber { background: var(--amb-tint);   color: var(--amber); }
 .badge-cyan  { background: var(--cyan-bg);    color: var(--cyan); }
+
+/* ─── Mobile responsive ─── */
+@media (max-width: 480px) {
+  .field {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .btn-primary {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  .btn-ghost {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .card {
+    border-radius: 10px;
+  }
+  /* Prevent horizontal overflow */
+  .card, form, aside, .right-col {
+    min-width: 0;
+    max-width: 100%;
+  }
+}

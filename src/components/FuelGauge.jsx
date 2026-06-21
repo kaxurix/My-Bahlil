@@ -1,32 +1,14 @@
-import { getBarsForLevel, MAX_TANK } from '../utils';
+import { getBarsForLevel, buildBarMeta } from '../utils';
 
-/**
- * Liter threshold per bar — "jika bar ini menyala, berarti bensin di atas X liter"
- * Bar 1 aktif (amber)  = 1.0–1.6 L
- * Bar 1 aktif (red)    = <1.0 L (kritis)
- * Bar 2 aktif          = 1.6–2.4 L
- * Bar 3 aktif          = 2.4–3.2 L
- * Bar 4 aktif          = 3.2–4.0 L
- * Bar 5 aktif          = 4.0–4.8 L
- * Bar 6 aktif          = 4.8–5.5 L
- */
-const BAR_META = [
-  { bar: 1, min: 0,   max: 1.6,  label: '<1.6 L' },
-  { bar: 2, min: 1.6, max: 2.4,  label: '~2.4 L' },
-  { bar: 3, min: 2.4, max: 3.2,  label: '~3.2 L' },
-  { bar: 4, min: 3.2, max: 4.0,  label: '~4.0 L' },
-  { bar: 5, min: 4.0, max: 4.8,  label: '~4.8 L' },
-  { bar: 6, min: 4.8, max: 5.5,  label: '~5.5 L' },
-];
-
-export default function FuelGauge({ liters, previewLiters }) {
-  const { bars, color, critical } = getBarsForLevel(liters);
+export default function FuelGauge({ liters, previewLiters, tankCapacity = 5.5 }) {
+  const { bars, color, critical } = getBarsForLevel(liters, tankCapacity);
+  const barMeta = buildBarMeta(tankCapacity);
 
   const hasPreview  = previewLiters != null && previewLiters > liters;
-  const previewBars = hasPreview ? getBarsForLevel(previewLiters).bars : 0;
+  const previewBars = hasPreview ? getBarsForLevel(previewLiters, tankCapacity).bars : 0;
 
-  const pct     = Math.min(100, (liters / MAX_TANK) * 100);
-  const prevPct = hasPreview ? Math.min(100, (previewLiters / MAX_TANK) * 100) : 0;
+  const pct     = Math.min(100, (liters / tankCapacity) * 100);
+  const prevPct = hasPreview ? Math.min(100, (previewLiters / tankCapacity) * 100) : 0;
 
   // Colors per state
   const barColor = color === 'red' ? 'var(--red)' : color === 'amber' ? 'var(--amber)' : 'var(--blue)';
@@ -50,11 +32,10 @@ export default function FuelGauge({ liters, previewLiters }) {
 
       {/* ── 6 bars ── */}
       <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6 }}>
-        {BAR_META.map(({ bar, label }) => {
+        {barMeta.map(({ bar, label }) => {
           const active  = bar <= bars;
           const preview = !active && hasPreview && bar <= previewBars;
 
-          // Active color: bar 1 special (amber = rendah, red = kritis)
           const activeColor = active && bar === 1
             ? (critical ? 'var(--red)' : 'var(--amber)')
             : active
@@ -76,7 +57,7 @@ export default function FuelGauge({ liters, previewLiters }) {
                 className={active && bar === 1 && critical ? 'pulse-red' : ''}
                 style={{
                   width: '100%',
-                  height: 16 + bar * 10,    /* stepped height: 26, 36, 46, 56, 66, 76 */
+                  height: 16 + bar * 10,
                   borderRadius: 5,
                   background: active
                     ? activeColor
@@ -100,14 +81,12 @@ export default function FuelGauge({ liters, previewLiters }) {
                 {bar}
               </span>
 
-              {/* Liter range label — key addition */}
+              {/* Liter range label */}
               <span style={{
-                fontSize: 9.5,
-                fontWeight: 500,
+                fontSize: 9.5, fontWeight: 500,
                 color: active ? activeColor : 'var(--ink-3)',
                 opacity: active ? 0.8 : 0.55,
-                lineHeight: 1,
-                textAlign: 'center',
+                lineHeight: 1, textAlign: 'center',
                 whiteSpace: 'nowrap',
               }}>
                 {label}
@@ -158,21 +137,17 @@ export default function FuelGauge({ liters, previewLiters }) {
           }}>
             {liters.toFixed(2)}
           </span>
-          <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink-3)' }}>L</span>
+          <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink-3)' }}>
+            / {tankCapacity} L
+          </span>
           {hasPreview && (
             <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--cyan)', marginLeft: 6 }}>
               → {previewLiters.toFixed(2)} L
             </span>
           )}
         </div>
-        <div style={{ textAlign: 'right' }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink-2)' }}>
-            ~{Math.round(liters * 50).toLocaleString('id-ID')} km
-          </p>
-          <p style={{ fontSize: 11, color: 'var(--ink-3)', marginTop: 2 }}>estimasi jarak</p>
-        </div>
+        <span className={`badge ${statusClass}`}>{statusLabel}</span>
       </div>
-
 
     </div>
   );
